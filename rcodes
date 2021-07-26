@@ -1,0 +1,53 @@
+library(lavaan)
+dat<-read.csv(file.choose(), sep= ";", header = TRUE)
+head(dat)
+#guvenilirlik
+FKG<-"FKG=~FKG1+FKG2+FKG3+FKG4"
+fit1<-cfa(FKG, data= dat, std.lv=TRUE)
+summary(fit1, fit.measures=TRUE, standardized=TRUE)
+#BİLGİYE ULASMA
+FKBU<-"FKBU=~FKBU1+FKBU2+FKBU3+FKBU4"
+fit2<-cfa(FKBU, data= dat, std.lv=TRUE)
+summary(fit2, fit.measures=TRUE, standardized=TRUE)
+#İLETİSİM KURMA
+
+FKIK<-"FKIK=~FKIK1+FKIK2+FKIK3+FKIK4"
+fit3<-cfa(FKIK, data= dat, std.lv=TRUE)
+summary(fit3, fit.measures=TRUE, standardized=TRUE)
+#DEVAM ETME
+FKDE<-"FKDE=~FKDE1+FKDE2+FKDE3"
+fit4<-cfa(FKDE, data= dat, std.lv=TRUE)
+summary(fit4, fit.measures=TRUE, standardized=TRUE)
+#PAYLASIM YAPMA
+FKPY<-"FKPY=~FKPY1+FKPY2+FKPY3"
+fit5<-cfa(FKPY, data= dat, std.lv=TRUE)
+summary(fit5, fit.measures=TRUE, standardized=TRUE)
+#DOGRULAYİCİ FAKTOR ANALİZİ CFA
+proje<-
+  "
+  FKG=~FKG1+FKG2+FKG3+FKG4
+  FKBU=~FKBU1+FKBU2+FKBU3+FKBU4
+  FKIK=~FKIK1+FKIK2+FKIK3+FKIK4
+  FKDE=~FKDE1+FKDE2+FKDE3
+  FKPY=~FKPY1+FKPY2+FKPY3
+"
+fit6<-cfa(proje, data = dat, std.lv=TRUE)
+summary(fit6, fit.measures=TRUE, standardized=TRUE, rsquare=TRUE)
+fitmeasures(fit6)
+
+#yapisal esitlik analizi
+
+proje<-
+  "
+  FKG=~FKG1+FKG2+FKG3+FKG4
+  FKBU=~FKBU1+FKBU2+FKBU3+FKBU4
+  FKIK=~FKIK1+FKIK2+FKIK3+FKIK4
+  FKDE=~FKDE1+FKDE2+FKDE3
+  FKPY=~FKPY1+FKPY2+FKPY3
+  #toplama
+  FKDE~FKG+FKBU+FKIK
+  FKPY~FKDE
+"
+fit10<-cfa(proje, data = dat, std.lv=TRUE)
+summary(fit10, fit.measures=TRUE, standardized=TRUE, rsquare=TRUE)
+
